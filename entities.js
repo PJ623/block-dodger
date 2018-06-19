@@ -15,7 +15,7 @@ class Player extends Entity {
     move(direction) {
         let previousPosition = this.position;
         let newPosition = new Vector(this.position.x + direction, this.position.y);
-    
+
         if (newPosition.x > -1 && newPosition.x < game.length) {
             this.previousPosition = previousPosition;
             this.position = newPosition;
@@ -29,7 +29,7 @@ class Block extends Entity {
         super();
         this.key = "&#9608;";
         this.hasMoved = false;
-        this.hasLanded = false; // 
+        this.hasLanded = false;
     }
 
     fall() {

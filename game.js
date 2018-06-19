@@ -10,17 +10,44 @@ class Vector {
 }
 
 class Game {
-    constructor(length, player) {
+    constructor(length, player, fps, spawnChance) {
         this.length = length;
         this.stage = [];
-        let startingPoint = Math.floor(length / 2);
+        this.fps = fps;
+        this.spawnChance = spawnChance;
+        this.isDone = false;
+        this.player = player;
+    }
 
-        for (let i = 0; i < length; i++) {
-            this.stage.push(new Array(length));
+    setStage() {
+        for (let i = 0; i < this.length; i++) {
+            this.stage.push(new Array(this.length));
         }
 
-        this.stage[length - 1][startingPoint] = player;
-        player.position = new Vector(startingPoint, length - 1);
+        let startingPoint = Math.floor(this.length / 2);
+
+        this.stage[this.length - 1][startingPoint] = this.player;
+        this.player.position = new Vector(startingPoint, this.length - 1);
+    }
+
+    play() {
+        this.setStage();
+        let animate = setInterval(() => {
+            if (!this.isDone) {
+                this.cleanup();
+                this.turn();
+
+                let nextSpawn = Math.random();
+
+                if (this.spawnChance > nextSpawn) {
+                    this.spawnBlock();
+                }
+
+                this.toString();
+            } else {
+                clearInterval(animate);
+            }
+        }, this.fps)
     }
 
     toString() {
@@ -30,8 +57,8 @@ class Game {
             for (let j = 0; j < this.stage[i].length; j++) {
                 if (this.stage[i][j] == null) {
                     str += "&nbsp";
-                } else if (this.stage[i][j] == player) {
-                    str += player.key;
+                } else if (this.stage[i][j] == this.player) {
+                    str += this.player.key;
                 } else {
                     str += this.stage[i][j].key;
                 }
@@ -66,7 +93,7 @@ class Game {
             for (let j = 0; j < this.stage[i].length; j++) {
                 if (this.stage[i][j] instanceof Block && this.stage[i][j].hasMoved == true) {
                     block = this.stage[i][j];
-                    this.hitConfirm(block, player);
+                    this.hitConfirm(block, this.player);
                     block.hasMoved = false;
                 }
             }
@@ -76,8 +103,8 @@ class Game {
     hitConfirm(entity1, entity2) {
         if (entity1.position.toString() == entity2.position.toString()) {
             console.log("DEAD!");
-            document.getElementById("message").innerText = "DEAD";
-            clearInterval(animate);
+            document.getElementById("message").innerText = "You are DEAD!\nPress 'r' to play again.";
+            this.isDone = true;
         }
     }
 
@@ -92,6 +119,5 @@ class Game {
     updateState(entity) {
         this.stage[entity.previousPosition.y][entity.previousPosition.x] = null;
         this.stage[entity.position.y][entity.position.x] = entity;
-        //this.toString();
     }
 }
