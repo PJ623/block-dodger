@@ -41,7 +41,7 @@ class Game {
         document.getElementById("canvas").innerHTML = str;
     }
 
-    spawnBlocks() {
+    spawnBlock() {
         let spawnPosition;
         spawnPosition = Math.floor(Math.random() * this.stage[0].length);
         let block = new Block;
@@ -92,6 +92,6 @@ class Game {
     updateState(entity) {
         this.stage[entity.previousPosition.y][entity.previousPosition.x] = null;
         this.stage[entity.position.y][entity.position.x] = entity;
-        this.toString();
+        //this.toString();
     }
 }

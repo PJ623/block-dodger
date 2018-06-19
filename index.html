@@ -8,29 +8,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
-            font-size: 2em;
+            /*font-size: 2em;*/
             font-family: monospace;
         }
 
         #canvas {
-            background-color: red;
-            padding: 1em;
-            margin: auto;
-            height: auto;
-            max-width: 500px;
+            background-color: white;
+            padding: 8px;
+            font-size: 2em; 
+            text-align: center;
+            display: inline-block;
+            border-style: solid;
+            border-width: 2px;
+        }
+
+        #message {
+            font-size: 2em;
+            text-align: center;
         }
 
         .wrapper {
-            width: 100%;
+            display: inline-block;
         }
     </style>
 </head>
 
 <body>
+    <h1>Block Dodger</h1>
+    <h2>written by <a href="https://github.com/PJ623/block-dodger">PJ623</a></h2>
     <div class="wrapper">
-        <p id="canvas">
+        <div id="canvas">
 
-        </p>
+        </div>
         <p id="message">
         </p>
     </div>
