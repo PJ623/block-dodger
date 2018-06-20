@@ -1,7 +1,16 @@
-let game = new Game(15, new Player(), 1000 / 15, 0.1);
-let message = document.getElementById("message");
+let timer = new Timer([document.getElementById("timer"), document.getElementById("best-time")]);
+let game = new Game(15, new Player(), 1000 / 15, 0.3, document.getElementById("canvas"), document.getElementById("message"));
 
 game.play();
+
+function restart() {
+    if (game.isDone) {
+        message.innerText = "";
+        game.play();
+    } else {
+        console.log("Game is not yet done!");
+    }
+}
 
 // Move elsewhere?
 const movementMap = {
@@ -18,16 +27,3 @@ document.addEventListener("keypress", (event) => {
         restart();
     }
 });
-
-function restart() {
-    if (game.isDone) {
-        message.innerText = "";
-        console.log("Starting new game!");
-        game = new Game(15, new Player(), 1000 / 15, 0.1);
-        game.play();
-    } else {
-        console.log("Game is not yet done!");
-    }
-}
-
-restart();

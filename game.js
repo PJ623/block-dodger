@@ -9,14 +9,55 @@ class Vector {
     }
 }
 
+class Timer {
+    constructor(targetElements) {
+        this.targetElements = targetElements;
+        this.time = 0;
+        this.runningClock;
+
+        if (localStorage.getItem("bestTime") != null) {
+            targetElements[1].innerHTML = this.parseTime(localStorage.getItem("bestTime"));
+        } else {
+            localStorage.setItem("bestTime", 0);
+        }
+    }
+
+    parseTime(specified) {
+        if (specified) {
+            return (Number(specified) / 10).toFixed(1);
+        }
+        return (this.time / 10).toFixed(1);
+    }
+
+    start() {
+        if (this.time != 0) {
+            this.time = 0;
+        }
+        this.runningClock = setInterval(() => {
+            this.time++;
+            this.targetElements[0].innerHTML = this.parseTime();
+        }, 100)
+    }
+
+    stop() {
+        clearInterval(this.runningClock);
+        if (this.time > localStorage.getItem("bestTime")) {
+            localStorage.setItem("bestTime", this.time);
+            this.targetElements[1].innerHTML = this.parseTime(localStorage.getItem("bestTime"));
+        };
+    }
+}
+
 class Game {
-    constructor(length, player, fps, spawnChance) {
+    constructor(length, player, fps, spawnChance, canvas, message) {
         this.length = length;
         this.stage = [];
         this.fps = fps;
         this.spawnChance = spawnChance;
         this.isDone = false;
         this.player = player;
+        this.canvas = canvas;
+        this.message = message;
     }
 
     setStage() {
@@ -31,7 +72,12 @@ class Game {
     }
 
     play() {
+        // Reset for restarts
+        game.isDone = false;
+        this.stage = [];
         this.setStage();
+
+        timer.start();
         let animate = setInterval(() => {
             if (!this.isDone) {
                 this.cleanup();
@@ -65,7 +111,8 @@ class Game {
             }
             str += "<br>";
         }
-        document.getElementById("canvas").innerHTML = str;
+        //document.getElementById("canvas").innerHTML = str;
+        this.canvas.innerHTML = str;
     }
 
     spawnBlock() {
@@ -102,8 +149,9 @@ class Game {
 
     hitConfirm(entity1, entity2) {
         if (entity1.position.toString() == entity2.position.toString()) {
-            console.log("DEAD!");
-            document.getElementById("message").innerText = "You are DEAD!\nPress 'r' to play again.";
+            timer.stop();
+            //document.getElementById("message").innerText = "You are DEAD!\nPress 'r' to play again.";
+            this.message.innerHTML = "You are DEAD!\nPress 'r' to play again.";
             this.isDone = true;
         }
     }
