@@ -29,7 +29,7 @@
             display: inline-block;
         }
 
-        #message {
+        .bold {
             font-weight: bold;
         }
     </style>
@@ -37,14 +37,14 @@
 
 <body>
     <h1>Block Dodger</h1>
-    <h2>written by
+    <p class="bold">written by
         <a href="https://github.com/PJ623/block-dodger">PJ623</a>
-    </h2>
+    </p>
     <div class="wrapper">
         <div id="canvas">
 
         </div>
-        <p id="message">
+        <p id="message" class="bold">
         </p>
         <p>
             Time:
@@ -57,6 +57,19 @@
                 N/A
             </span>
         </p>
+    </div>
+    <div>
+        <h2>Instructions:</h2>
+        <ul>
+            <li>Use WASD to move.</li>
+            <li>Having a block land on you results in a game over.</li>
+            <li>Try to survive as long as you can.</li>
+        </ul>
+        <h2>Legend:</h2>
+        <ul>
+            <li>You = O</li>
+            <li>Block = &#9608;</li>
+        </ul>
     </div>
     <script src="game.js"></script>
     <script src="entities.js"></script>
